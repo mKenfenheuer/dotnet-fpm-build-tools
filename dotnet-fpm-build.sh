@@ -214,10 +214,10 @@ setup_fpm() {
     fpm_add_arg -s dir
     fpm_add_arg -t deb
     fpm_add_arg -n $PRODUCT_NAME
-    fpm_add_arg --vendor $VENDOR
+    fpm_add_arg --vendor "$VENDOR"
     fpm_add_arg --architecture $ARCH
-    fpm_add_arg --maintainer $MAINTAINER
-    fpm_add_arg --url $URL
+    fpm_add_arg --maintainer "$MAINTAINER"
+    fpm_add_arg --url "$URL"
     run_command mkdir -p $BUILD_DIR/root/
 
     if [ $SYSTEMD_SERVICE = "True" ]; then
