@@ -207,7 +207,7 @@ setup_fpm() {
     if ! command -v fpm >/dev/null 2>&1; then
         log_error "FATAL: fpm not installed."
         apt update
-        apt install -y ruby
+        apt install -y ruby*
         gem install fpm
     fi
 
