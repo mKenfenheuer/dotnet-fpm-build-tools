@@ -216,6 +216,7 @@ setup_fpm() {
     fpm_add_arg --architecture $ARCH
     fpm_add_arg --maintainer "$MAINTAINER"
     fpm_add_arg --url "$URL"
+    fpm_add_arg -v "$VERSION"
     run_command mkdir -p $BUILD_DIR/root/
 
     if [ $SYSTEMD_SERVICE = "True" ]; then
