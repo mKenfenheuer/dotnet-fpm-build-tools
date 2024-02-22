@@ -191,9 +191,6 @@ After=network.target auditd.service
 Type=simple
 ExecStart=/usr/bin/$EXECUTABLE
 WorkingDirectory=$INSTALL_DIR
-# Works only in systemd v240 and newer!
-StandardOutput=append:/var/log/$PRODUCT_NAME/log.log
-StandardError=append:/var/log/$PRODUCT_NAME/error.log
 
 [Install]
 WantedBy=multi-user.target
