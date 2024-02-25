@@ -190,7 +190,7 @@ After=network.target auditd.service
 [Service]
 Type=simple
 ExecStart=/usr/bin/$EXECUTABLE
-WorkingDirectory=$INSTALL_DIR
+WorkingDirectory=$INSTALL_DIR$PRODUCT_NAME/
 
 [Install]
 WantedBy=multi-user.target
