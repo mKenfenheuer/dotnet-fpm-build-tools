@@ -168,6 +168,7 @@ build_project() {
     fi
     mkdir -p $BUILD_DIR/root$CONFIG_DIR/$PRODUCT_NAME
     cp "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME/appsettings.json" "$BUILD_DIR/root$CONFIG_DIR/$PRODUCT_NAME/appsettings.json"
+    rm "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME/appsettings.Development.json" || true
 }
 
 fpr_args_i=0
