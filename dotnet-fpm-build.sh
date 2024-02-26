@@ -166,7 +166,8 @@ build_project() {
         run_command ln -s "$INSTALL_DIR/$PRODUCT_NAME/$EXECUTABLE" "$BUILD_DIR/root/usr/bin/$EXECUTABLE"
         fpm_add_arg "$BUILD_DIR/root/usr/bin/$EXECUTABLE=/usr/bin/$EXECUTABLE"
     fi
-    fpm_add_arg "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME/appsettings.json=$CONFIG_DIR/$PRODUCT_NAME/appsettings.json"
+    mkdir -p $BUILD_DIR/root$CONFIG_DIR/$PRODUCT_NAME
+    cp "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME/appsettings.json" "$BUILD_DIR/root$CONFIG_DIR/$PRODUCT_NAME/appsettings.json"
 }
 
 fpr_args_i=0
