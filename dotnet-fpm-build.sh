@@ -135,7 +135,7 @@ parse_arguments() {
 
     log_debug "###### BEGIN ARGUMENTS ######"
     log_debug "SYSTEMD_SERVICE:  $SYSTEMD_SERVICE"
-    log_debug "CONFIG_DIRECTORY: $CONFIG_DIRECTORY"
+    log_debug "CONFIG_DIRECTORYECTORY: $CONFIG_DIRECTORYECTORY"
     log_debug "USR_BIN_SYMLINK:  $USR_BIN_SYMLINK"
     log_debug "INSTALL_DIR:      $INSTALL_DIR"
     log_debug "CSPROJ_FILE:      $CSPROJ_FILE"
@@ -166,9 +166,10 @@ build_project() {
         run_command ln -s "$INSTALL_DIR/$PRODUCT_NAME/$EXECUTABLE" "$BUILD_DIR/root/usr/bin/$EXECUTABLE"
         fpm_add_arg "$BUILD_DIR/root/usr/bin/$EXECUTABLE=/usr/bin/$EXECUTABLE"
     fi
-    mkdir -p $BUILD_DIR/root$CONFIG_DIR/$PRODUCT_NAME
-    cp "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME/appsettings.json" "$BUILD_DIR/root$CONFIG_DIR/$PRODUCT_NAME/appsettings.json"
+    mkdir -p $BUILD_DIR/root$CONFIG_DIRECTORY/$PRODUCT_NAME
+    cp "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME/appsettings.json" "$BUILD_DIR/root$CONFIG_DIRECTORY/$PRODUCT_NAME/appsettings.json"
     rm "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME/appsettings.Development.json" || true
+    fpm_add_arg "$BUILD_DIR/root$CONFIG_DIRECTORY/$PRODUCT_NAME/=$CONFIG_DIRECTORY/$PRODUCT_NAME/"
 }
 
 fpr_args_i=0
@@ -183,9 +184,7 @@ fpm_add_arg() {
 
 build_systemd_unit() {
     log_debug Creating systmed service unit $PRODUCT_NAME.service
-    run_command mkdir -p $BUILD_DIR/root/etc/systemd/system/
-    run_command mkdir -p $BUILD_DIR/root/usr/lib/systemd/system/
-    cat <<EOF >> "$BUILD_DIR/root/usr/lib/systemd/system/$PRODUCT_NAME.service"
+    cat <<EOF >> "$BUILD_DIR/$PRODUCT_NAME.service"
 [Unit]
 Description=$PRODUCT_NAME
 After=network.target auditd.service
@@ -198,7 +197,7 @@ WorkingDirectory=$INSTALL_DIR/$PRODUCT_NAME/
 [Install]
 WantedBy=multi-user.target
 EOF
-    fpm_add_arg --deb-systemd "$BUILD_DIR/root/usr/lib/systemd/system/$PRODUCT_NAME.service"
+    fpm_add_arg --deb-systemd "$BUILD_DIR/$PRODUCT_NAME.service"
     fpm_add_arg --deb-systemd-auto-start
     fpm_add_arg --deb-systemd-enable
 }
@@ -238,4 +237,4 @@ cleanup_build
 setup_fpm
 build_project
 build_fpm
-cleanup_build
+#cleanup_build
