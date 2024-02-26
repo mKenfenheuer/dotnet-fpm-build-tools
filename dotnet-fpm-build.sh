@@ -3,7 +3,7 @@
 SYSTEMD_SERVICE="False"
 CONFIG_DIRECTORY="False"
 USR_BIN_SYMLINK="False"
-INSTALL_DIR="/usr/share/"
+INSTALL_DIR="/usr/share"
 EXECUTABLE="False"
 CSPROJ_FILE="False"
 LOG_LEVEL=INFO
@@ -160,12 +160,13 @@ build_project() {
     run_command dotnet publish --configuration Release --self-contained true --output "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME" $CSPROJ_FILE 
     log_debug Leaving directory \"$CSPROJ_DIR\"
     cd $MAIN_DIR
-    fpm_add_arg "$BUILD_DIR/root$INSTALL_DIR$PRODUCT_NAME/=$INSTALL_DIR$PRODUCT_NAME/"
+    fpm_add_arg "$BUILD_DIR/root$INSTALL_DIR/$PRODUCT_NAME/=$INSTALL_DIR/$PRODUCT_NAME/"
     if [ $USR_BIN_SYMLINK = "True" ]; then
         run_command mkdir -p $BUILD_DIR/root/usr/bin/
-        run_command ln -s "$INSTALL_DIR$PRODUCT_NAME/$EXECUTABLE" "$BUILD_DIR/root/usr/bin/$EXECUTABLE"
+        run_command ln -s "$INSTALL_DIR/$PRODUCT_NAME/$EXECUTABLE" "$BUILD_DIR/root/usr/bin/$EXECUTABLE"
         fpm_add_arg "$BUILD_DIR/root/usr/bin/$EXECUTABLE=/usr/bin/$EXECUTABLE"
     fi
+    fpm_add_arg "$BUILD_DIR/root$INSTALL_DIR/appsettings.json=$CONFIG_DIR/appsettings.json"
 }
 
 fpr_args_i=0
@@ -190,7 +191,7 @@ After=network.target auditd.service
 [Service]
 Type=simple
 ExecStart=/usr/bin/$EXECUTABLE
-WorkingDirectory=$INSTALL_DIR$PRODUCT_NAME/
+WorkingDirectory=$INSTALL_DIR/$PRODUCT_NAME/
 
 [Install]
 WantedBy=multi-user.target
